@@ -1945,6 +1945,16 @@ void config_from_file(const char *filename)
 		exit_clean(1);
 	}
 	buf[bufsize + 2] = 0;
+
+	char *p = buf;
+    while ((p = strchr(p, '#')) != NULL)
+    {
+    	char *e = strchr(p, '\n');
+		size_t n = e ? (e - p) + 1 : buf + bufsize + 2 - p;
+		memset(p, ' ', n);
+		p += n;
+    }
+
 	// wordexp fails if it sees \t \n \r between args
 	replace_char(buf, '\n', ' ');
 	replace_char(buf, '\r', ' ');
